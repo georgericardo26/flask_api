@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+    backend_api:
+        build: ./Backend
+        command: flask run --host 0.0.0.0
+        container_name: backend
+        environment:
+            FLASK_ENV: "development"
+            FLASK_APP: "Backend.app"
+        volumes:
+            - .:/code
+        ports:
+            - "5000:5000"
+        depends_on:
+            -   db_postgres
+
+    db_postgres:
+        image: postgres
+        restart: always
+        container_name: postgres_db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_DB: postgres
+            POSTGRES_PASSWORD: postgres
+        volumes:
+            - db_data:/var/lib/postgresql/data/
+
+volumes:
+    db_data:
