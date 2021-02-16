@@ -51,8 +51,3 @@ class Child(db.Model):
                 self=self
             )
         )
-
-    # @validates('parents')
-    # def validate_parents(self, key, field):
-    #     if len(self.parents) > 2:
-    #         raise AssertionError("You can not add more than 2 parents for a single child")

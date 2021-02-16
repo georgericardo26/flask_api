@@ -1,10 +1,12 @@
 from flask import Flask
+from flask_oauthlib.provider import OAuth2Provider
 from flask_rest_paginate import Pagination
 
 from Backend.app.utils import get_config
 
 
 Config = get_config()
+oauth = OAuth2Provider()
 db_instance = None
 app_instance = None
 
@@ -24,10 +26,11 @@ def create_app(config_name=None, **kwargs):
     except ImportError:
         raise Exception('Invalid Config')
 
+    init_db(app)
+    oauth.init_app(app)
+
     app.register_blueprint(parents_api, url_prefix='/api/')
     app.register_blueprint(child_api, url_prefix='/api/')
-
-    init_db(app)
 
     # Pagination
     app_instance = app

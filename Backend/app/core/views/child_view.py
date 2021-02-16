@@ -30,6 +30,7 @@ def list_children():
     return result, HTTPStatus.OK
 
 
+# Todo: Endpoint requested in code challenge, but isn't good practice to Rest API
 @child_api.route('child/', methods=["POST"])
 def create_parent():
     data = request.get_json()
@@ -47,6 +48,7 @@ def create_parent():
         return jsonify({"Error": "Something wrong"}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+# Todo: Endpoint requested in code challenge, but isn't good practice to Rest API
 @child_api.route('child/<int:id_child>/', methods=["GET", "PUT", "PATCH"])
 def retrieve_update_parent(id_child):
     child = Child.query.filter_by(id=id_child).first_or_404()
@@ -69,6 +71,7 @@ def retrieve_update_parent(id_child):
     return jsonify(ChildSchema().dump(updated_parent).data), HTTPStatus.OK
 
 
+# Todo: Endpoint requested in code challenge, but isn't good practice to Rest API
 @child_api.route('child/<int:id_child>/', methods=["DELETE"])
 def delete_parent(id_child):
     child = Child.query.filter_by(id=id_child).first_or_404()
