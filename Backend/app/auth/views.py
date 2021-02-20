@@ -11,11 +11,11 @@ from Backend.app.database import db
 auth_api = Blueprint('auth_api', __name__)
 
 
-def current_user():
-    if 'id' in session:
-        uid = session['id']
-        return User.query.get(uid)
-    return None
+# def current_user():
+#     if 'id' in session:
+#         uid = session['id']
+#         return User.query.get(uid)
+#     return None
 
 
 @auth_api.route('user/', methods='POST')
@@ -30,7 +30,12 @@ def create_user():
 
     try:
         created_instance = schema.create_user(validated_data)
-        session['id'] = created_instance.id
+        # session['id'] = created_instance.id
         return jsonify(schema.dump(created_instance).data), HTTPStatus.CREATED
     except Exception:
         return jsonify({"Error": "Something wrong"}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+# @auth_api.route('oauth/token/', methods='POST')
+# def authentication():
+#     data = request.get_json()
