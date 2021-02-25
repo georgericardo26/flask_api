@@ -12,7 +12,7 @@ class BaseConfig:
 class DevelopmentConfig(BaseConfig):
     ENV = 'development'
     DEBUG = True
-    DOMAIN = 'http://localhost:5000'
+    DOMAIN = 'http://localhost:8000'
     SECRET_KEY = 'secret'
 
 

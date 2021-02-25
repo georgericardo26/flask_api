@@ -1,5 +1,5 @@
-import time
 from datetime import datetime, timedelta
+from uuid import uuid4
 
 from sqlalchemy.orm import relationship
 
@@ -16,12 +16,14 @@ class User(db.Model):
 
 
 class Client(db.Model):
-    # id = db.Column(db.Integer, primary_key=True)
-    # human readable name
     name = db.Column(db.String(40))
-    client_id = db.Column(db.String(40), primary_key=True)
+    user_id = db.Column(
+        db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')
+    )
+    user = relationship('User')
+    client_id = db.Column(db.String(55), unique=True, default=uuid4, primary_key=True)
     client_secret = db.Column(db.String(55), unique=True, index=True,
-                              nullable=False)
+                              default=uuid4().hex)
     client_type = db.Column(db.String(20), default='public')
     _redirect_uris = db.Column(db.Text)
     default_scope = db.Column(db.Text, default='__all__')
@@ -93,17 +95,15 @@ class Token(db.Model):
     )
     user = relationship('User')
     client = relationship('Client')
-    token_type = db.Column(db.String(40))
-    access_token = db.Column(db.String(255))
-    refresh_token = db.Column(db.String(255))
-    expires = db.Column(db.DateTime)
-    scope = db.Column(db.Text)
+    token_type = db.Column(db.String(40), default="password")
+    access_token = db.Column(db.String(55), unique=True, index=True,
+                              default=uuid4().hex)
+    refresh_token = db.Column(db.String(55), unique=True, index=True,
+                              default=uuid4().hex)
+    expires = db.Column(db.Integer, default=3600)
+    scope = db.Column(db.Text, default="read write")
 
     def __init__(self, **kwargs):
-        expires_in = kwargs.pop('expires_in', None)
-        if expires_in is not None:
-            self.expires = datetime.utcnow() + timedelta(seconds=expires_in)
-
         for k, v in kwargs.items():
             setattr(self, k, v)
 

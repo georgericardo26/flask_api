@@ -3,13 +3,15 @@ from http import HTTPStatus
 from flask import Blueprint, jsonify
 from flask import request
 
-from Backend.app import Pagination
+from Backend.app import Pagination, app_instance, default_provider
 from Backend.app.core.models import Parent, Child
 from Backend.app.core.schemas import ParentSchema
 from Backend.app.database import db
 
 
 parents_api = Blueprint('parents_api', __name__)
+
+oauth = default_provider(app_instance)
 
 
 @parents_api.route('parents/', methods=["GET"])
